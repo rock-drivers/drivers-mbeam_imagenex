@@ -31,6 +31,7 @@ struct Config
       bool rec83p;
       MBeamProfPFilter profFilter;
       
+      
       Config()
 	: ctrl(EXTERNALCONTROL),
 	  trans(TRANSREC),
@@ -75,7 +76,8 @@ struct Config
 	  cmd.averaging = averaging;
 	  cmd.reserved0 = 0;
 	  cmd.reserved1 = 0;  
-	  *((uint16_t*)(&cmd.svHigh)) = soundVelocity*10;
+	  cmd.svHigh = (soundVelocity*10 >> 8) & 0xFF;
+	  cmd.svLow = (soundVelocity*10) & 0xFF;
 	  cmd.mode = mode;
 	  cmd.out83p83b = out83p83b;
 	  cmd.profPtEnable = profPtEnable;

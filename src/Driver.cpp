@@ -30,7 +30,7 @@ void Driver::read(int timeout)
         int size = readPacket(&buffer[0], buffer.size());
 	cout << "received bytes " <<size <<endl;
 	if(size){
-	  //parseReply(&buffer);
+	  parseReply(&buffer);
 	}
     } catch ( std::runtime_error &e) {
         throw;
