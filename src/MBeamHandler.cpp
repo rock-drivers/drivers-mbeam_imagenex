@@ -7,24 +7,92 @@
 using namespace std;
 using namespace mbeam_imagenex;
 
-
 MBeamHandler::MBeamHandler(const Config& config, int max_packet_size, bool extract_last)
     : iodrivers_base::Driver(max_packet_size,extract_last),
       mConfig(config)
 {
     mSonarScan.memory_layout_column = false; 
-    mSonarScan.polar_coordinates = false;
+    mSonarScan.polar_coordinates = true;
 }
 
 void MBeamHandler::sendExtCmd()
 {
   raw::MBeamExtCmd cmd;
   mConfig >> cmd;
-  cout <<"SoundVelocity " <<mConfig.soundVelocity <<endl;
+  cout <<"SoundVelocity " <<mConfig.soundVelocity <<endl
+       <<"gain " <<(int)mConfig.gain <<endl
+       <<"range " <<mConfig.range <<endl;
   std::vector<uint8_t> msg;
   cmd >> msg;
   cout <<"writing bytes " <<msg.size() <<endl;
   writePacket(msg.data(),msg.size());
+}
+
+void MBeamHandler::setGain(const int& gain)
+{
+  if(gain < 0){
+    mConfig.gain = 0;
+    return;
+  }
+  if(gain > 20){
+    mConfig.gain = 20;
+    return;
+  }
+  mConfig.gain = gain;  
+}
+
+void MBeamHandler::setRange(const int& range)
+{
+  if(range <= 5){
+    mConfig.range = RANGE5;
+    return;
+  }
+  if(range <= 10){
+    mConfig.range = RANGE10;
+    return;
+  }
+  if(range <= 20){
+    mConfig.range = RANGE20;
+    return;
+  }
+  if(range <= 30){
+    mConfig.range = RANGE30;
+    return;
+  }
+  if(range <= 40){
+    mConfig.range = RANGE40;
+    return;
+  }
+  if(range <= 50){
+    mConfig.range = RANGE50;
+    return;
+  }
+  if(range <= 60){
+    mConfig.range = RANGE60;
+    return;
+  }
+  if(range <= 80){
+    mConfig.range = RANGE80;
+    return;
+  }
+  if(range <= 100){
+    mConfig.range = RANGE100;
+    return;
+  }
+  if(range <= 150){
+    mConfig.range = RANGE150;
+    return;
+  }
+  if(range <= 200){
+    mConfig.range = RANGE200;
+    return;
+  }
+  if(range <= 250){
+    mConfig.range = RANGE250;
+    return;
+  }
+  mConfig.range = RANGE300;
+  return;
 }
 
 base::samples::SonarScan MBeamHandler::getData() const
@@ -34,13 +102,17 @@ base::samples::SonarScan MBeamHandler::getData() const
 
 void MBeamHandler::parseReply(const std::vector<uint8_t>* buffer)
 {
+  if(buffer->size()<89){
+    cout <<"buffer incomplete" <<endl;
+    return;
+  }
   mSonarScan.time = base::Time::now();
   mSonarScan.time_beams.clear();
   mSonarScan.number_of_beams = (*buffer)[71];
   mSonarScan.number_of_beams |= (*buffer)[70] <<8;
   uint16_t val = (*buffer)[77];
   val |= (*buffer)[76] <<8;
-  mSonarScan.start_bearing  = base::Angle::fromDeg(double(val)/100-180);
+  mSonarScan.start_bearing  = base::Angle::fromDeg(fabs(double(val)/100-180));
   val = (*buffer)[78];
   mSonarScan.angular_resolution = base::Angle::fromDeg(double(val)/100);
   if((*buffer)[83] & 0x80){
@@ -88,6 +160,9 @@ void MBeamHandler::parseReply(const std::vector<uint8_t>* buffer)
 	<< "start_bearing " <<mSonarScan.start_bearing <<endl
 	<< "angular_resolution " <<mSonarScan.angular_resolution <<endl
 	<< "sampling_interval " <<mSonarScan.sampling_interval <<endl
-	<< "speed_of_sound " <<mSonarScan.speed_of_sound <<endl;
+	<< "speed_of_sound " <<mSonarScan.speed_of_sound <<endl
+	<< "datasize " <<mSonarScan.data.size() <<endl
+	<< "datasize/beamnumber " <<mSonarScan.data.size()/mSonarScan.number_of_beams <<endl
+	<< "len " <<len <<endl;
   return;
 }

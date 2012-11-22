@@ -13,8 +13,13 @@ Driver::Driver(const Config& config, int max_packet_size, bool extract_last)
 
 void Driver::open(std::string const& uri)
 {
-    cout <<"open" <<endl;
-    openURI(uri);
+    try{
+      cout <<"open" <<endl;
+      openURI(uri);
+    } catch ( std::runtime_error &e) {
+      cout <<"caught exception" <<endl;
+      throw e;
+    }  
 }
 
 void Driver::collectData()
@@ -27,9 +32,10 @@ void Driver::read(int timeout)
    std::vector<uint8_t> buffer(MBEAM_MAX_REPL_LENGTH);
 
     try {
-        int size = readPacket(&buffer[0], buffer.size());
+	int size = readPacket(&buffer[0], buffer.size());
 	cout << "received bytes " <<size <<endl;
 	if(size){
+	  buffer.resize(size);
 	  parseReply(&buffer);
 	}
     } catch ( std::runtime_error &e) {

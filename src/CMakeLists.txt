@@ -1,5 +1,5 @@
 rock_library(mbeam_imagenex
-    SOURCES Driver.cpp MBeamHandler.cpp
+    SOURCES Driver.cpp MBeamHandler.cpp 
     HEADERS Driver.hpp MBeamHandler.hpp Config.hpp MBeamRaw.hpp MBeamTypes.hpp
     DEPS_PKGCONFIG base-types iodrivers_base base-lib)
 

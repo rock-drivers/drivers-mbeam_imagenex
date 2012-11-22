@@ -14,6 +14,8 @@ namespace mbeam_imagenex
 	 public: 
 	  MBeamHandler(const Config& config = Config(), int max_packet_size = MBEAM_MAX_REPL_LENGTH, bool extract_last = false);
 	  void sendExtCmd();
+	  void setGain(const int& gain);
+          void setRange(const int& range);
 	  base::samples::SonarScan getData() const;
 	 protected:
 	   Config mConfig;

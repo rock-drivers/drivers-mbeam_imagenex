@@ -72,7 +72,7 @@ namespace mbeam_imagenex {
 	  gain(6),
 	  dispGain(50),
 	  gainEQ(1),
-	  sectorSize(SEC90),
+	  sectorSize(SEC120),
 	  beamWidth(WIDTHNORMAL),
 	  noBeams(NUMBER240),
 	  averaging(5),
@@ -97,44 +97,6 @@ namespace mbeam_imagenex {
 	   *((uint16_t*)(&svHigh)) = (uint16_t)MBEAM_DEFAULT_SV*10;
       }
       
-      /*MBeamExtCmd(const mbeam_imagenex::Config& config)
-      {
-	  header1 = MBEAM_HEADER1;
-	  header2 = MBEAM_HEADER2;
-	  id = 0;
-	  ctrlByte1 = config.ctrl;
-	  ctrlByte2 = config.trans;
-	  ctrlByte3 = 0;
-	  ctrlByte4 = 0;
-	  range = config.range;
-	  gain = config.gain;
-	  dispGain = config.dispGain;
-	  gainEQ = config.gainEQ;
-	  sectorSize = config.sectorSize;
-	  beamWidth = config.beamWidth;
-	  noBeams = config.noBeams;
-	  averaging = config.averaging;
-	  reserved0 = 0;
-	  reserved1 = 0;  
-	  *((uint16_t*)(&svHigh)) = config.soundVelocity*10;
-	  mode = config.mode;
-	  out83p83b = config.out83p83b;
-	  profPtEnable = config.profPtEnable;
-	  profMinRange = config.profMinRange;
-	  profMinLev = config.profMinLev;
-	  xdcrUpDn = config.xdcrUpDn;
-	  profTilt = config.profTilt+180;
-	  reserved2 = 0;
-	  reserved3 = 0;
-	  rec837 = config.rec837;
-	  rec83p = config.rec83p;
-	  reserved4 = 0;
-	  reserved5 = 0;
-	  reserved6 = 0;
-	  reserved7 = 0;
-	  profFilter = config.profFilter;
-      }*/
-	  
       MBeamExtCmd & operator>>(std::vector<uint8_t>& msg)
       {
 	msg.resize(MBEAM_CMD_LEN);
