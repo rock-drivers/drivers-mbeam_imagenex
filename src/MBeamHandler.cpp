@@ -19,7 +19,7 @@ void MBeamHandler::sendExtCmd()
 {
   raw::MBeamExtCmd cmd;
   mConfig >> cmd;
-  cout <<"SoundVelocity " <<mConfig.soundVelocity <<endl
+  cout <<"SoundVelocity " <<mConfig.sound_velocity <<endl
        <<"gain " <<(int)mConfig.gain <<endl
        <<"range " <<mConfig.range <<endl;
   std::vector<uint8_t> msg;
@@ -124,7 +124,7 @@ void MBeamHandler::parseReply(const std::vector<uint8_t>* buffer)
     mSonarScan.speed_of_sound = 1500;
   }
   float ang = 0;
-  switch(mConfig.beamWidth){
+  switch(mConfig.beam_width){
     case WIDTHWIDE: ang = 3;break;
     case WIDTHNORMAL: ang = 1.5;break;
     case WIDTHNARR:
