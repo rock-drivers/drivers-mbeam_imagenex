@@ -19,12 +19,8 @@ void MBeamHandler::sendExtCmd()
 {
   raw::MBeamExtCmd cmd;
   mConfig >> cmd;
-  cout <<"SoundVelocity " <<mConfig.sound_velocity <<endl
-       <<"gain " <<(int)mConfig.gain <<endl
-       <<"range " <<mConfig.range <<endl;
   std::vector<uint8_t> msg;
   cmd >> msg;
-  cout <<"writing bytes " <<msg.size() <<endl;
   writePacket(msg.data(),msg.size());
 }
 
@@ -103,7 +99,6 @@ base::samples::SonarScan MBeamHandler::getData() const
 void MBeamHandler::parseReply(const std::vector<uint8_t>* buffer)
 {
   if(buffer->size()<89){
-    cout <<"buffer incomplete" <<endl;
     return;
   }
   mSonarScan.time = base::Time::now();
@@ -155,7 +150,7 @@ void MBeamHandler::parseReply(const std::vector<uint8_t>* buffer)
   for (uint i = 256; i < len; i++){
     mSonarScan.data.push_back((*buffer)[i]);
   }
-  cout << "number_of_beams " <<mSonarScan.number_of_beams <<endl
+  /*cout << "number_of_beams " <<mSonarScan.number_of_beams <<endl
 	<< "number_of_bins " <<mSonarScan.number_of_bins <<endl
 	<< "start_bearing " <<mSonarScan.start_bearing <<endl
 	<< "angular_resolution " <<mSonarScan.angular_resolution <<endl
@@ -163,6 +158,6 @@ void MBeamHandler::parseReply(const std::vector<uint8_t>* buffer)
 	<< "speed_of_sound " <<mSonarScan.speed_of_sound <<endl
 	<< "datasize " <<mSonarScan.data.size() <<endl
 	<< "datasize/beamnumber " <<mSonarScan.data.size()/mSonarScan.number_of_beams <<endl
-	<< "len " <<len <<endl;
+	<< "len " <<len <<endl;*/
   return;
 }
