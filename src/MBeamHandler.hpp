@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <iodrivers_base/Driver.hpp>
-#include "base/samples/sonar_scan.h"
+#include "base/samples/SonarScan.hpp"
 #include "Config.hpp"
 #include "MBeamRaw.hpp"
 
